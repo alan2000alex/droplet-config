@@ -2,18 +2,23 @@ provider "digitalocean" {
   token = var.do_token
 }
 
-resource "digitalocean_ssh_key" "workload" {
-  name       = "${var.droplet_name}-key"
-  public_key = var.ssh_public_key
-}
+# resource "digitalocean_ssh_key" "workload" {
+#   name       = "${var.droplet_name}-key"
+#   public_key = var.ssh_public_key
+# }
 
+data "digitalocean_ssh_key" "default" {
+  name = "alan-lunix"
+}
 resource "digitalocean_droplet" "workload" {
-  image             = "ubuntu-22-04-x64"
+  image             = "ubuntu-26-04-x64"
   name              = var.droplet_name
   region            = var.region
   size              = var.droplet_size
-  ssh_keys          = [digitalocean_ssh_key.workload.fingerprint]
+  ssh_keys          = [data.digitalocean_ssh_key.default.id]
   graceful_shutdown = true
+
+  # ssh_keys          = [digitalocean_ssh_key.workload.fingerprint]
 }
 
 resource "digitalocean_firewall" "workload" {

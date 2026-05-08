@@ -7,13 +7,13 @@ variable "do_token" {
 variable "droplet_size" {
   description = "Droplet size slug (see: doctl compute size list)"
   type        = string
-  default     = "m-16vcpu-128gb"
+  default     = "s-1vcpu-1gb"
 }
 
 variable "region" {
   description = "DigitalOcean region slug"
   type        = string
-  default     = "nyc3"
+  default     = "blr1"
 }
 
 variable "droplet_name" {
@@ -22,8 +22,8 @@ variable "droplet_name" {
   default     = "workload-vm"
 }
 
-variable "ssh_public_key" {
-  description = "SSH public key content to register with DigitalOcean (passed via TF_VAR_ssh_public_key)"
-  type        = string
-  sensitive   = true
-}
+# variable "ssh_public_key" {
+#   description = "SSH public key content to register with DigitalOcean (passed via TF_VAR_ssh_public_key)"
+#   type        = string
+#   sensitive   = true
+# }
