@@ -1,0 +1,13 @@
+# Terraform
+terraform/terraform.tfvars
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform/
+terraform/.terraform.lock.hcl
+
+# Ansible — generated at runtime from terraform output
+ansible/inventory.ini
+
+# SSH key pair (generated locally, never commit)
+~/.ssh/do_vm_key
+~/.ssh/do_vm_key.pub

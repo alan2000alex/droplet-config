@@ -1,0 +1,14 @@
+# Copy this file to terraform.tfvars and fill in your values.
+# IMPORTANT: terraform.tfvars is listed in .gitignore — never commit it.
+#
+# Preferred alternative: export TF_VAR_do_token=<your-token> in your shell
+# so the token never touches disk.
+
+# do_token = "dop_v1_xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+# ssh_public_key = "ssh-ed25519 AAAA..."   # content of ~/.ssh/do_vm_key.pub
+#                                           # spin-up.sh sets this automatically via TF_VAR_ssh_public_key
+
+# Optional overrides (defaults shown):
+# droplet_size = "m-16vcpu-128gb"   # 128 GB RAM — see: doctl compute size list
+# region       = "nyc3"
+# droplet_name = "workload-vm"

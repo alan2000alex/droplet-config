@@ -1,0 +1,22 @@
+packages:
+  - build-essential
+  - python3-pip
+  - python3-venv
+  - htop
+  - vim
+  - curl
+  - wget
+  - git
+  - tmux
+  - unzip
+
+workload_user: workload
+
+swap_size: "8g"
+
+# Key-value pairs written to /etc/profile.d/workload-env.sh
+# Leave empty ({}) to skip.
+workload_env: {}
+# workload_env:
+#   DATA_DIR: /data
+#   NUM_WORKERS: "16"

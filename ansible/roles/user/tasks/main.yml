@@ -1,0 +1,26 @@
+---
+- name: Create workload user
+  ansible.builtin.user:
+    name: "{{ workload_user }}"
+    shell: /bin/bash
+    create_home: true
+    state: present
+
+- name: Add workload user to sudo group
+  ansible.builtin.user:
+    name: "{{ workload_user }}"
+    groups: sudo
+    append: true
+
+- name: Allow passwordless sudo for workload user
+  ansible.builtin.copy:
+    dest: "/etc/sudoers.d/{{ workload_user }}"
+    content: "{{ workload_user }} ALL=(ALL) NOPASSWD:ALL\n"
+    mode: "0440"
+    validate: "visudo -cf %s"
+
+- name: Install SSH authorized key for workload user
+  ansible.posix.authorized_key:
+    user: "{{ workload_user }}"
+    key: "{{ lookup('file', '~/.ssh/do_vm_key.pub') }}"
+    state: present

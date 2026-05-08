@@ -1,0 +1,11 @@
+---
+- name: Configure workload VM
+  hosts: droplets
+  become: true
+  vars_files:
+    - vars.yml
+  roles:
+    - base
+    - user
+    - swap
+    - env

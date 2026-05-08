@@ -1,0 +1,7 @@
+---
+- name: Write workload environment profile script
+  ansible.builtin.template:
+    src: workload-env.sh.j2
+    dest: /etc/profile.d/workload-env.sh
+    mode: "0644"
+  when: workload_env | length > 0
