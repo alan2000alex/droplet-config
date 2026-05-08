@@ -57,7 +57,7 @@ echo "==> Wrote ansible/inventory.ini"
 # ── Wait for SSH ──────────────────────────────────────────────────────────────
 
 echo "==> Waiting for SSH to become available"
-ansible all \
+uvx --from ansible ansible all \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   -m wait_for_connection \
   --timeout 120
@@ -65,7 +65,7 @@ ansible all \
 # ── Ansible ───────────────────────────────────────────────────────────────────
 
 echo "==> Running Ansible playbook"
-ansible-playbook \
+uvx --from ansible ansible-playbook \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   "$ROOT_DIR/ansible/site.yml"
 
