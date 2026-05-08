@@ -61,7 +61,7 @@ export ANSIBLE_CONFIG="$ROOT_DIR/ansible/ansible.cfg"
 # ── Wait for SSH ──────────────────────────────────────────────────────────────
 
 echo "==> Waiting for SSH to become available"
-uvx --from ansible ansible all \
+uvx --from ansible-core ansible all \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   -m wait_for_connection \
   --timeout 120
@@ -69,7 +69,7 @@ uvx --from ansible ansible all \
 # ── Ansible ───────────────────────────────────────────────────────────────────
 
 echo "==> Running Ansible playbook"
-uvx --from ansible ansible-playbook \
+uvx --from ansible-core ansible-playbook \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   "$ROOT_DIR/ansible/site.yml"
 
