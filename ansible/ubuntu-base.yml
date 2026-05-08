@@ -1,0 +1,13 @@
+---
+- name: Ubuntu base configuration
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Assert Ubuntu distribution
+      ansible.builtin.assert:
+        that: ansible_distribution == "Ubuntu"
+        fail_msg: "This playbook only supports Ubuntu. Detected: {{ ansible_distribution }}"
+
+  roles:
+    - ubuntu_base
