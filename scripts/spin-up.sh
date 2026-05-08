@@ -69,6 +69,7 @@ uvx --from ansible-core ansible all \
 # ── Ansible ───────────────────────────────────────────────────────────────────
 
 echo "==> Running Ansible playbook"
+uvx --from ansible-core ansible-galaxy collection install ansible.posix
 uvx --from ansible-core ansible-playbook \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   "$ROOT_DIR/ansible/site.yml"
