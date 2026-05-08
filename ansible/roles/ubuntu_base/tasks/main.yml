@@ -1,5 +1,12 @@
 ---
-- import_tasks: system_upgrade.yml
-- import_tasks: journald.yml
-- import_tasks: unattended_upgrades.yml
-- import_tasks: apt_daily_timer.yml
+- name: System upgrade tasks
+  import_tasks: system_upgrade.yml
+
+- name: Journald configuration tasks
+  import_tasks: journald.yml
+
+- name: Unattended upgrades tasks
+  import_tasks: unattended_upgrades.yml
+
+- name: APT daily timer tasks
+  import_tasks: apt_daily_timer.yml
