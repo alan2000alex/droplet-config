@@ -54,6 +54,10 @@ $DROPLET_IP ansible_user=root ansible_ssh_private_key_file=$SSH_KEY
 EOF
 echo "==> Wrote ansible/inventory.ini"
 
+# ── Ansible config ───────────────────────────────────────────────────────────
+
+export ANSIBLE_CONFIG="$ROOT_DIR/ansible/ansible.cfg"
+
 # ── Wait for SSH ──────────────────────────────────────────────────────────────
 
 echo "==> Waiting for SSH to become available"
