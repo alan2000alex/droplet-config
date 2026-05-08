@@ -5,3 +5,19 @@
     dest: /etc/profile.d/workload-env.sh
     mode: "0644"
   when: workload_env | length > 0
+
+- name: Copy Python scripts to VM
+  ansible.builtin.copy:
+    src: "{{ item }}"
+    dest: "/home/{{ workload_user }}/{{ item }}"
+    owner: "{{ workload_user }}"
+    mode: "0755"
+  loop: "{{ python_scripts }}"
+  when: python_scripts | length > 0
+
+- name: Run Python scripts
+  ansible.builtin.command:
+    cmd: "sudo python3 /home/{{ workload_user }}/{{ item }}"
+  become_user: "{{ workload_user }}"
+  loop: "{{ python_scripts }}"
+  when: python_scripts | length > 0

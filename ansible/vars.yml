@@ -14,6 +14,13 @@ workload_user: sentinel
 
 # swap_size: "8g"
 
+# Python scripts to copy and run on the VM during provisioning.
+# Place the script files in ansible/roles/env/files/.
+# Leave empty ([]) to skip.
+python_scripts: []
+# python_scripts:
+#   - my_script.py
+
 # Key-value pairs written to /etc/profile.d/workload-env.sh
 # Leave empty ({}) to skip.
 workload_env: {}
