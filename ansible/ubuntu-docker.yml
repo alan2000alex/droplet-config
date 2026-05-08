@@ -1,0 +1,18 @@
+---
+- name: Ubuntu Docker setup
+  hosts: all
+  become: true
+
+  tasks:
+    - name: Assert Ubuntu distribution
+      ansible.builtin.assert:
+        that: ansible_distribution == "Ubuntu"
+        fail_msg: "This playbook only supports Ubuntu. Detected: {{ ansible_distribution }}"
+
+    - name: Assert x86_64 architecture
+      ansible.builtin.assert:
+        that: ansible_architecture == "x86_64"
+        fail_msg: "This playbook only supports x86_64. Detected: {{ ansible_architecture }}"
+
+  roles:
+    - ubuntu_docker

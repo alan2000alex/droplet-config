@@ -1,0 +1,15 @@
+---
+- name: Install Docker and supporting packages
+  ansible.builtin.apt:
+    name:
+      - docker.io
+      - jq
+      - logrotate
+    state: present
+    update_cache: true
+
+- name: Ensure Docker service is enabled and started
+  ansible.builtin.systemd:
+    name: docker
+    enabled: true
+    state: started

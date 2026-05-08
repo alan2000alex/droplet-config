@@ -1,0 +1,10 @@
+---
+- name: restart docker
+  ansible.builtin.systemd:
+    name: docker
+    state: restarted
+
+- name: watchtower compose up
+  ansible.builtin.command:
+    cmd: docker compose -f /opt/watchtower/docker-compose.yml up -d
+  changed_when: false

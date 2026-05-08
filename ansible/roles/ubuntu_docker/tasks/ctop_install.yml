@@ -1,0 +1,32 @@
+---
+- name: Get latest ctop release info from GitHub
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/bcicen/ctop/releases/latest
+    return_content: true
+    headers:
+      Accept: application/vnd.github+json
+  register: ctop_release
+
+- name: Set ctop download facts
+  ansible.builtin.set_fact:
+    ctop_latest_tag: "{{ ctop_release.json.tag_name }}"
+    ctop_url: >-
+      {{ (ctop_release.json.assets
+          | selectattr('name', 'match', '.*linux-amd64$')
+          | list | first).browser_download_url }}
+
+- name: Check installed ctop version
+  ansible.builtin.command: /usr/local/bin/ctop -v
+  register: ctop_installed_version
+  failed_when: false
+  changed_when: false
+
+- name: Download ctop binary
+  ansible.builtin.get_url:
+    url: "{{ ctop_url }}"
+    dest: /usr/local/bin/ctop
+    owner: root
+    group: root
+    mode: "0755"
+  when: ctop_installed_version.rc != 0 or
+        ctop_latest_tag not in ctop_installed_version.stdout

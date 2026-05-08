@@ -1,0 +1,15 @@
+---
+- name: Docker packages tasks
+  import_tasks: docker_packages.yml
+
+- name: Docker daemon configuration tasks
+  import_tasks: docker_daemon.yml
+
+- name: Docker Compose install tasks
+  import_tasks: docker_compose_install.yml
+
+- name: ctop install tasks
+  import_tasks: ctop_install.yml
+
+- name: Watchtower tasks
+  import_tasks: watchtower.yml

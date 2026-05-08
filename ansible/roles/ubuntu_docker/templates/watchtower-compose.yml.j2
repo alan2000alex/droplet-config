@@ -1,0 +1,18 @@
+name: watchtower-localhost
+
+services:
+  watchtower:
+    image: nickfedor/watchtower
+    container_name: watchtower.localhost
+    restart: always
+
+    mem_limit: 128M
+
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+      - /etc/localtime:/etc/localtime:ro
+
+    labels:
+      - com.centurylinklabs.watchtower.enable=true
+
+    command: --label-enable --cleanup --schedule "0 15 4 * * *"

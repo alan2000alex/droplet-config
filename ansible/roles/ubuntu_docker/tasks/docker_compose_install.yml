@@ -1,0 +1,52 @@
+---
+- name: Get latest docker-compose release info from GitHub
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/docker/compose/releases/latest
+    return_content: true
+    headers:
+      Accept: application/vnd.github+json
+  register: docker_compose_release
+
+- name: Set docker-compose download facts
+  ansible.builtin.set_fact:
+    docker_compose_latest_tag: "{{ docker_compose_release.json.tag_name }}"
+    docker_compose_url: >-
+      {{ (docker_compose_release.json.assets
+          | selectattr('name', 'equalto', 'docker-compose-linux-x86_64')
+          | list | first).browser_download_url }}
+
+- name: Check installed docker-compose version
+  ansible.builtin.command: /usr/local/bin/docker-compose version --short
+  register: docker_compose_installed_version
+  failed_when: false
+  changed_when: false
+
+- name: Download docker-compose binary
+  ansible.builtin.get_url:
+    url: "{{ docker_compose_url }}"
+    dest: /usr/local/bin/docker-compose
+    owner: root
+    group: root
+    mode: "0755"
+  when: docker_compose_installed_version.rc != 0 or
+        docker_compose_latest_tag not in docker_compose_installed_version.stdout
+
+- name: Create /usr/local/bin/d shortcut symlink
+  ansible.builtin.file:
+    src: docker-compose
+    dest: /usr/local/bin/d
+    state: link
+
+- name: Ensure Docker CLI plugins directory exists
+  ansible.builtin.file:
+    path: /usr/local/lib/docker/cli-plugins
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create Docker CLI plugin symlink for docker-compose
+  ansible.builtin.file:
+    src: /usr/local/bin/docker-compose
+    dest: /usr/local/lib/docker/cli-plugins/docker-compose
+    state: link

@@ -1,0 +1,25 @@
+---
+- name: Ensure /opt/watchtower directory exists
+  ansible.builtin.file:
+    path: /opt/watchtower
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Deploy Watchtower docker-compose.yml
+  ansible.builtin.template:
+    src: watchtower-compose.yml.j2
+    dest: /opt/watchtower/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: watchtower compose up
+
+- name: Deploy Watchtower manual run script
+  ansible.builtin.template:
+    src: watchtower-run.sh.j2
+    dest: /opt/watchtower/run.sh
+    owner: root
+    group: root
+    mode: "0755"
