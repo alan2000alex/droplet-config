@@ -10,9 +10,9 @@ packages:
   - tmux
   - unzip
 
-workload_user: workload
+workload_user: sentinel
 
-swap_size: "8g"
+# swap_size: "8g"
 
 # Key-value pairs written to /etc/profile.d/workload-env.sh
 # Leave empty ({}) to skip.
