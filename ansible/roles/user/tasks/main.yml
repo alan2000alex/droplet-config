@@ -22,5 +22,5 @@
 - name: Install SSH authorized key for workload user
   ansible.posix.authorized_key:
     user: "{{ workload_user }}"
-    key: "{{ lookup('file', '~/.ssh/do_vm_key.pub') }}"
+    key: "{{ lookup('file', '~/.ssh/alan_vivo_lunix.pub') }}"
     state: present

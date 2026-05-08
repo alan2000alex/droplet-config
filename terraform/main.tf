@@ -11,7 +11,7 @@ data "digitalocean_ssh_key" "default" {
   name = "alan-lunix"
 }
 resource "digitalocean_droplet" "workload" {
-  image             = "ubuntu-26-04-x64"
+  image             = "ubuntu-24-04-x64"
   name              = var.droplet_name
   region            = var.region
   size              = var.droplet_size

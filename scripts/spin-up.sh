@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
-# SSH_KEY="$HOME/.ssh/alan_vivo_lunix"
+SSH_KEY="$HOME/.ssh/alan_vivo_lunix"
 
 # ── Preflight ────────────────────────────────────────────────────────────────
 
@@ -29,8 +29,8 @@ fi
 
 # ── Expose SSH public key to Terraform ───────────────────────────────────────
 
-# export TF_VAR_ssh_public_key
-# TF_VAR_ssh_public_key=$(cat "${SSH_KEY}.pub")
+export TF_VAR_ssh_public_key
+TF_VAR_ssh_public_key=$(cat "${SSH_KEY}.pub")
 
 # ── Terraform ────────────────────────────────────────────────────────────────
 
