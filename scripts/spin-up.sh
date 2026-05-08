@@ -3,7 +3,7 @@ set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
-SSH_KEY="$HOME/.ssh/do_vm_key"
+# SSH_KEY="$HOME/.ssh/alan_vivo_lunix"
 
 # ── Preflight ────────────────────────────────────────────────────────────────
 
@@ -16,17 +16,17 @@ fi
 
 # ── SSH keypair ───────────────────────────────────────────────────────────────
 
-if [[ ! -f "$SSH_KEY" ]]; then
-  echo "==> Generating SSH keypair at $SSH_KEY"
-  ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "do-workload-vm"
-else
-  echo "==> SSH key already exists at $SSH_KEY — skipping keygen"
-fi
+# if [[ ! -f "$SSH_KEY" ]]; then
+#   echo "==> Generating SSH keypair at $SSH_KEY"
+#   ssh-keygen -t ed25519 -f "$SSH_KEY" -N "" -C "do-workload-vm"
+# else
+#   echo "==> SSH key already exists at $SSH_KEY — skipping keygen"
+# fi
 
 # ── Expose SSH public key to Terraform ───────────────────────────────────────
 
-export TF_VAR_ssh_public_key
-TF_VAR_ssh_public_key=$(cat "${SSH_KEY}.pub")
+# export TF_VAR_ssh_public_key
+# TF_VAR_ssh_public_key=$(cat "${SSH_KEY}.pub")
 
 # ── Terraform ────────────────────────────────────────────────────────────────
 
@@ -44,7 +44,7 @@ fi
 DROPLET_IP=$(terraform -chdir="$ROOT_DIR/terraform" output -json droplet_ip | tr -d '"')
 echo "==> Droplet IP: $DROPLET_IP"
 
-cat > "$ROOT_DIR/ansible/inventory.ini" <<EOF
+cat >"$ROOT_DIR/ansible/inventory.ini" <<EOF
 [droplets]
 $DROPLET_IP ansible_user=root ansible_ssh_private_key_file=$SSH_KEY
 EOF
