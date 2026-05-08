@@ -37,4 +37,4 @@
 
 - [x] 6.1 Run `terraform -chdir=terraform validate` and `terraform -chdir=terraform fmt -check` to verify HCL syntax
 - [x] 6.2 Run `ansible-lint ansible/site.yml` to check playbook quality (install `ansible-lint` if not present)
-- [ ] 6.3 End-to-end smoke test: run `./scripts/spin-up.sh`, SSH into the droplet, verify packages and user exist, then run `./scripts/tear-down.sh` and confirm no resources remain in the DigitalOcean console
+- [x] 6.3 End-to-end smoke test: run `./scripts/spin-up.sh`, SSH into the droplet, verify packages and user exist, then run `./scripts/tear-down.sh` and confirm no resources remain in the DigitalOcean console
