@@ -17,9 +17,9 @@ workload_user: sentinel
 # Python scripts to copy and run on the VM during provisioning.
 # Place the script files in ansible/roles/env/files/.
 # Leave empty ([]) to skip.
-python_scripts: []
-# python_scripts:
-#   - my_script.py
+# python_scripts: []
+python_scripts:
+  - agent-harness-install.py
 
 # Key-value pairs written to /etc/profile.d/workload-env.sh
 # Leave empty ({}) to skip.
