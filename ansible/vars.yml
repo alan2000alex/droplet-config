@@ -20,6 +20,7 @@ workload_user: sentinel
 # python_scripts: []
 python_scripts:
   - agent-harness-install.py
+  - openspec.py
 
 # Key-value pairs written to /etc/profile.d/workload-env.sh
 # Leave empty ({}) to skip.

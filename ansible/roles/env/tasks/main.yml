@@ -6,10 +6,21 @@
     mode: "0644"
   when: workload_env | length > 0
 
+- name: Create scripts, dev dir
+  ansible.builtin.file:
+    path: "/home/{{ workload_user }}/{{ item }}"
+    state: directory
+    owner: "{{ workload_user }}"
+    group: "{{ workload_user }}"
+    mode: "0755"
+  loop:
+    - scripts
+    - dev
+
 - name: Copy Python scripts to VM
   ansible.builtin.copy:
     src: "{{ item }}"
-    dest: "/home/{{ workload_user }}/{{ item }}"
+    dest: "/home/{{ workload_user }}/scripts/{{ item }}"
     owner: "{{ workload_user }}"
     mode: "0755"
   loop: "{{ python_scripts }}"
@@ -17,7 +28,7 @@
 
 - name: Run Python scripts
   ansible.builtin.command:
-    cmd: "sudo python3 /home/{{ workload_user }}/{{ item }}"
+    cmd: "sudo python3 /home/{{ workload_user }}/scripts/{{ item }}"
   become_user: "{{ workload_user }}"
   loop: "{{ python_scripts }}"
   when: python_scripts | length > 0
