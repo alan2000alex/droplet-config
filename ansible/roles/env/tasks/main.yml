@@ -32,3 +32,8 @@
   become_user: "{{ workload_user }}"
   loop: "{{ python_scripts }}"
   when: python_scripts | length > 0
+
+- name: Install chezmoi
+  ansible.builtin.shell:
+    cmd: sh -c "$(curl -fsLS https://get.chezmoi.io)" -- -b /usr/local/bin
+    creates: /usr/local/bin/chezmoi
