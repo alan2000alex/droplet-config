@@ -4,6 +4,10 @@
     update_cache: true
     cache_valid_time: 3600
 
+- name: Upgrade apt packages
+  ansible.builtin.apt:
+    upgrade: dist
+
 - name: Install system packages
   ansible.builtin.apt:
     name: "{{ packages }}"
