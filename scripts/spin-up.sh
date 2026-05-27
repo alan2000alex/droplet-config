@@ -4,6 +4,7 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 ROOT_DIR="$(dirname "$SCRIPT_DIR")"
 SSH_KEY="$HOME/.ssh/alan_vivo_lunix"
+VARS_FILE="$SCRIPT_DIR/../ansible/vars.yml"
 
 # ── Preflight ────────────────────────────────────────────────────────────────
 
@@ -78,18 +79,19 @@ uvx --from ansible-core ansible-playbook \
 
 LOCAL_CREDS="$ROOT_DIR/local/creds"
 CREDS_PUSHED=false
+USERNAME=$(yq -r '.workload_user' "$VARS_FILE")
 
 for dir in .claude .gemini .codex; do
   if [[ -d "$LOCAL_CREDS/$dir" ]]; then
     rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
-      "$LOCAL_CREDS/$dir/" "root@$DROPLET_IP:~/$dir/"
+      "$LOCAL_CREDS/$dir/" "$USERNAME@$DROPLET_IP:~/$dir/"
     CREDS_PUSHED=true
   fi
 done
 
 if [[ -f "$LOCAL_CREDS/.gitconfig" ]]; then
   rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
-    "$LOCAL_CREDS/.gitconfig" "root@$DROPLET_IP:~/"
+    "$LOCAL_CREDS/.gitconfig" "$USERNAME@$DROPLET_IP:~/"
   CREDS_PUSHED=true
 fi
 
@@ -97,8 +99,8 @@ if [[ -f "$LOCAL_CREDS/.ssh/github_ed25519" ]]; then
   rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
     "$LOCAL_CREDS/.ssh/github_ed25519" \
     "$LOCAL_CREDS/.ssh/github_ed25519.pub" \
-    "root@$DROPLET_IP:~/.ssh/"
-  ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "root@$DROPLET_IP" \
+    "$USERNAME@$DROPLET_IP:~/.ssh/"
+  ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "$USERNAME@$DROPLET_IP" \
     "chmod 700 ~/.ssh && chmod 600 ~/.ssh/github_ed25519"
   CREDS_PUSHED=true
 fi
