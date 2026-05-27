@@ -74,6 +74,41 @@ uvx --from ansible-core ansible-playbook \
   -i "$ROOT_DIR/ansible/inventory.ini" \
   "$ROOT_DIR/ansible/site.yml"
 
+# ── Credential sync ───────────────────────────────────────────────────────────
+
+LOCAL_CREDS="$ROOT_DIR/local/creds"
+CREDS_PUSHED=false
+
+for dir in .claude .gemini .codex; do
+  if [[ -d "$LOCAL_CREDS/$dir" ]]; then
+    rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
+      "$LOCAL_CREDS/$dir/" "root@$DROPLET_IP:~/$dir/"
+    CREDS_PUSHED=true
+  fi
+done
+
+if [[ -f "$LOCAL_CREDS/.gitconfig" ]]; then
+  rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
+    "$LOCAL_CREDS/.gitconfig" "root@$DROPLET_IP:~/"
+  CREDS_PUSHED=true
+fi
+
+if [[ -f "$LOCAL_CREDS/.ssh/github_ed25519" ]]; then
+  rsync -az -e "ssh -o StrictHostKeyChecking=no -i $SSH_KEY" \
+    "$LOCAL_CREDS/.ssh/github_ed25519" \
+    "$LOCAL_CREDS/.ssh/github_ed25519.pub" \
+    "root@$DROPLET_IP:~/.ssh/"
+  ssh -o StrictHostKeyChecking=no -i "$SSH_KEY" "root@$DROPLET_IP" \
+    "chmod 700 ~/.ssh && chmod 600 ~/.ssh/github_ed25519"
+  CREDS_PUSHED=true
+fi
+
+if $CREDS_PUSHED; then
+  echo "==> Credentials pushed to droplet"
+else
+  echo "==> No credentials found in local/creds/ — skipping (first run)"
+fi
+
 echo ""
 echo "✓ Spin-up complete — droplet is ready at $DROPLET_IP"
 echo "  SSH:  ssh -i $SSH_KEY root@$DROPLET_IP"

@@ -11,3 +11,6 @@ ansible/inventory.ini
 # SSH key pair (generated locally, never commit)
 ~/.ssh/do_vm_key
 ~/.ssh/do_vm_key.pub
+
+# Local credential store — synced to/from droplet, never committed
+local/
